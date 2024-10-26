@@ -1,0 +1,305 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #faf8ef;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.header {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 60px;
+    font-weight: bold;
+    color: #776e65;
+}
+
+.scores-container {
+    display: flex;
+    gap: 10px;
+}
+
+.score-box {
+    background-color: #bbada0;
+    padding: 10px 20px;
+    border-radius: 3px;
+    color: white;
+    text-align: center;
+}
+
+.score-title {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.score-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.game-container {
+    width: 500px;
+    height: 500px;
+    padding: 15px;
+    background-color: #bbada0;
+    border-radius: 6px;
+    position: relative;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 15px;
+    width: 100%;
+    height: 100%;
+}
+
+.cell {
+    background-color: rgba(238, 228, 218, 0.35);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* .tile {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+} */
+
+/* Tile colors based on numbers */
+.tile-2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    color: #483d32;
+    background-color: #f1eeea;
+    cursor: pointer;
+}
+
+.tile-4 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #ede0c8;
+    color: #5b554e;
+    cursor: pointer;
+}
+
+.tile-8 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #f2b179;
+    color: white;
+    cursor: pointer;
+}
+
+.tile-16 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #f59563;
+    color: white;
+    cursor: pointer;
+}
+
+.tile-32 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #f67c5f;
+    color: white;
+    cursor: pointer;
+}
+
+.tile-64 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #f65e3b;
+    color: white;
+    cursor: pointer;
+}
+
+.tile-128 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #edcf72;
+    color: white;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.tile-256 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #edcc61;
+    color: white;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.tile-512 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #edc850;
+    color: white;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.tile-1024 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #edc53f;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.tile-2048 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background-color: #edc22e;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.new-game-btn {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #8f7a66;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 3px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.15s ease;
+}
+
+.new-game-btn:hover {
+    background-color: #7f6a56;
+}
+
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(238, 228, 218, 0.73);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.game-over.show {
+    display: flex;
+}
+
+.game-over-text {
+    font-size: 60px;
+    font-weight: bold;
+    color: #776e65;
+    text-align: center;
+}
