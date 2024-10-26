@@ -98,6 +98,7 @@ body {
     font-weight: bold;
     border-radius: 3px;
     transition: all 0.15s ease;
+    transition : border 0.005s;
     color: #483d32;
     background-color: #f1eeea;
     cursor: pointer;
