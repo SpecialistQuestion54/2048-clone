@@ -1,23 +1,26 @@
 const new_game_btn = document.querySelector(".new-game-btn");
 const score_text = document.querySelector(".score-value");
+const high_score_text = document.querySelector(".best");
 new_game_btn.addEventListener('click', function () {
     location.reload();
 });
 let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
 let grid = document.querySelector(".grid");
 let score = 0;
+let highScore = sessionStorage.getItem("highScore") ? sessionStorage.getItem("highScore") : 0;
+high_score_text.innerText = highScore.toString();
 let selected_tile = null;
 console.log(board);
 
 function random_Spawn() {
+
     let sp = Math.floor(Math.random() * 16);
     if (board[Math.floor(sp / 4)][Math.floor(sp % 4)] === 0) {
         const start = document.getElementById(sp.toString());
         start.className = "tile-2";
         start.innerText = start.className.split("-")[1];
         board[Math.floor(sp / 4)][sp % 4] = 2;
-    } else random_Spawn();
-
+    }else random_Spawn();
 }
 
 function updateDisplay() {
@@ -32,16 +35,40 @@ function updateDisplay() {
     }
     console.log(board);
 }
+
+function isGameOver(board) {
+    // Check for empty cells
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (board[i][j] === 0) {
+                return false; // Game can continue if an empty cell is found
+            }
+            
+            // Check horizontally for possible merge
+            if (j < 3 && board[i][j] === board[i][j + 1]) {
+                return false;
+            }
+            
+            // Check vertically for possible merge
+            if (i < 3 && board[i][j] === board[i + 1][j]) {
+                return false;
+            }
+        }
+    }
+    
+    return true; // Game is over if no empty cells or possible merges are found
+}
+
 function moveWholeBoardDown() {
-    let f = false;
+    let copy = board.map(x => [...x]);
     for (let j = 0; j < 4; j++) {
         let col = board.map(x => x[j]);
         col = col.filter(x => x != 0);
-        for (let i = col.length - 1; i > 0; i--) { 
+        for (let i = col.length - 1; i > 0; i--) {
             if (col[i] === col[i - 1]) {
                 col[i] *= 2;
                 score += col[i];
-                col[i - 1] = 0;  
+                col[i - 1] = 0;
                 f = true;
             }
         }
@@ -55,28 +82,30 @@ function moveWholeBoardDown() {
             board[i][j] = col[i];
 
     }
+    if (!isGameOver(board)) {
+        random_Spawn();
+        updateDisplay();
+    }
+    else {
+        document.querySelector(".game-over").style.display = "flex";
+    }
 
-    if (f) random_Spawn();
-    updateDisplay();
 }
 
 function moveWholeBoardUp() {
-    let f = false;
     for (let j = 0; j < 4; j++) {
         let col = board.map(x => x[j]);
         col = col.filter(x => x != 0);
-        for (let i =0; i < col.length-1; i++) { 
+        for (let i = 0; i < col.length - 1; i++) {
             if (col[i] === col[i + 1]) {
                 col[i] *= 2;
                 score += col[i];
-                col[i + 1] = 0;  
-                f = true;
+                col[i + 1] = 0;
             }
         }
         col = col.filter(value => value != 0);
         let k = 4 - col.length;
         while (k--) {
-            f = true;
             col.push(0);
         }
         for (i = 0; i < 4; i++)
@@ -84,20 +113,24 @@ function moveWholeBoardUp() {
 
     }
 
-    if (f) random_Spawn();
-    updateDisplay();
+    if (!isGameOver(board)) {
+        random_Spawn();
+        updateDisplay();
+    }
+    else {
+        document.querySelector(".game-over").style.display = "flex";
+    }
 }
 
 function moveWholeBoardRight() {
-    let f = false;
-    for(let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         let row = board[i];
         row = row.filter(x => x != 0);
-        for (let j = row.length - 1; j > 0; j--) { 
+        for (let j = row.length - 1; j > 0; j--) {
             if (row[j] === row[j - 1]) {
                 row[j] *= 2;
                 score += row[j];
-                row[j - 1] = 0;  
+                row[j - 1] = 0;
                 f = true;
             }
         }
@@ -110,20 +143,24 @@ function moveWholeBoardRight() {
         board[i] = row;
     }
 
-    if (f) random_Spawn();
-    updateDisplay();
+    if (!isGameOver(board)) {
+        random_Spawn();
+        updateDisplay();
+    }
+    else {
+        document.querySelector(".game-over").style.display = "flex";
+    }
 }
 
 function moveWholeBoardLeft() {
-    let f = false;
-    for(let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         let row = board[i];
         row = row.filter(x => x != 0);
-        for (let j = 0; j < row.length - 1; j++) { 
+        for (let j = 0; j < row.length - 1; j++) {
             if (row[j] === row[j + 1]) {
                 row[j] *= 2;
                 score += row[j];
-                row[j + 1] = 0;  
+                row[j + 1] = 0;
                 f = true;
             }
         }
@@ -136,12 +173,20 @@ function moveWholeBoardLeft() {
         board[i] = row;
     }
 
-    if (f) random_Spawn();
-    updateDisplay();
+    if (!isGameOver(board)) {
+        random_Spawn();
+        updateDisplay();
+    }
+    else {
+        document.querySelector(".game-over").style.display = "flex";
+    }
 }
 
-function updateScore(){
+function updateScore() {
     score_text.innerText = score;
+    highScore = score > highScore ? score : highScore;
+    high_score_text.innerText = highScore.toString();
+    sessionStorage.setItem("highScore", highScore);
 }
 
 random_Spawn();
@@ -152,16 +197,16 @@ grid.addEventListener("click", function (event) {
     const target = event.target;
     if (selected_tile) {
         selected_tile.style.border = "none";
-        const str = Math.floor(Number(selected_tile.id)/4);
-        const ttr = Math.floor(Number(target.id)/4);
-        const stc = Math.floor(Number(selected_tile.id)%4);
-        const ttc = Math.floor(Number(target.id)%4);
+        const str = Math.floor(Number(selected_tile.id) / 4);
+        const ttr = Math.floor(Number(target.id) / 4);
+        const stc = Math.floor(Number(selected_tile.id) % 4);
+        const ttc = Math.floor(Number(target.id) % 4);
         if (ttr > str && ttc === stc) {
             moveWholeBoardDown();
         }
-        else if(ttr < str && ttc === stc)
+        else if (ttr < str && ttc === stc)
             moveWholeBoardUp();
-        else if(ttr === str && ttc > stc)
+        else if (ttr === str && ttc > stc)
             moveWholeBoardRight();
         else moveWholeBoardLeft();
         selected_tile = null;
@@ -180,14 +225,24 @@ grid.addEventListener('contextmenu', function (event) {
 
 
 document.addEventListener('keydown', function (event) {
+    event.preventDefault();
+    if (selected_tile) {
+        selected_tile.style.border = "none";
+        selected_tile = null;
+    }
+    const delay = 65;
     if (event.key === "ArrowLeft") {
-        moveWholeBoardLeft();
+        setTimeout(() => { moveWholeBoardLeft(); }, delay);
+
     } else if (event.key === "ArrowRight") {
-        moveWholeBoardRight();
+        setTimeout(() => { moveWholeBoardRight(); }, delay);
+
     } else if (event.key === "ArrowUp") {
-        moveWholeBoardUp();
+        setTimeout(() => { moveWholeBoardUp(); }, delay);
+
     } else if (event.key === "ArrowDown") {
-        moveWholeBoardDown();
+        setTimeout(() => { moveWholeBoardDown(); }, delay);
+
     }
     updateScore();
 })
