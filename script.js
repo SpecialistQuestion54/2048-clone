@@ -5,12 +5,17 @@ new_game_btn.addEventListener('click', function () {
     location.reload();
 });
 let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+
 let grid = document.querySelector(".grid");
 let score = 0;
 let highScore = sessionStorage.getItem("highScore") ? sessionStorage.getItem("highScore") : 0;
 high_score_text.innerText = highScore.toString();
 let selected_tile = null;
 console.log(board);
+
+function updateBoard(board){
+    sessionStorage.setItem("board", JSON.stringify(board));
+}
 
 function random_Spawn() {
 
@@ -20,6 +25,7 @@ function random_Spawn() {
         start.className = "tile-2";
         start.innerText = start.className.split("-")[1];
         board[Math.floor(sp / 4)][sp % 4] = 2;
+        updateBoard();
     }else random_Spawn();
 }
 
@@ -33,7 +39,7 @@ function updateDisplay() {
             target_tile.innerText = tti_className.indexOf("-") == -1 ? "" : tti_className.split("-")[1];
         }
     }
-    console.log(board);
+    
 }
 
 function isGameOver(board) {
@@ -96,6 +102,7 @@ function moveWholeBoardDown() {
     if (!equal(board,copy)) {
         random_Spawn();
         updateDisplay();
+        updateBoard(copy);
     }
     else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
@@ -128,6 +135,7 @@ function moveWholeBoardUp() {
     if (!equal(board, copy)) {
         random_Spawn();
         updateDisplay();
+        updateBoard(copy);
     }
     else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
@@ -159,6 +167,7 @@ function moveWholeBoardRight() {
     if (!equal(board, copy)) {
         random_Spawn();
         updateDisplay();
+        updateBoard(copy);
     }
     else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
@@ -190,6 +199,7 @@ function moveWholeBoardLeft() {
     if (!equal(board, copy)) {
         random_Spawn();
         updateDisplay();
+        updateBoard(copy);
     }
     else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
@@ -205,7 +215,7 @@ function updateScore() {
 
 random_Spawn();
 random_Spawn();
-
+updateBoard();
 
 grid.addEventListener("click", function (event) {
     const target = event.target;
@@ -229,6 +239,7 @@ grid.addEventListener("click", function (event) {
         selected_tile.style.border = "3px solid black";
     }
     updateScore();
+    
 });
 
 grid.addEventListener('contextmenu', function (event) {
@@ -259,4 +270,9 @@ document.addEventListener('keydown', function (event) {
 
     }
     updateScore();
+})
+
+document.querySelector(".undo").addEventListener('click', function () {
+    board = JSON.parse(sessionStorage.getItem("board"));
+    updateDisplay();
 })
