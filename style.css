@@ -41,6 +41,15 @@ body {
     text-align: center;
 }
 
+.undo{
+    background-color: #bbada0;
+    padding: 10px 20px;
+    border-radius: 3px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
 .score-title {
     font-size: 14px;
     text-transform: uppercase;

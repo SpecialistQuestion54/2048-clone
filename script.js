@@ -59,8 +59,19 @@ function isGameOver(board) {
     return true; // Game is over if no empty cells or possible merges are found
 }
 
+function equal(a, b) {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (a[i][j] !== b[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function moveWholeBoardDown() {
-    let copy = board.map(x => [...x]);
+    const copy = board.map(x => x.slice());
     for (let j = 0; j < 4; j++) {
         let col = board.map(x => x[j]);
         col = col.filter(x => x != 0);
@@ -82,17 +93,18 @@ function moveWholeBoardDown() {
             board[i][j] = col[i];
 
     }
-    if (!isGameOver(board)) {
+    if (!equal(board,copy)) {
         random_Spawn();
         updateDisplay();
     }
-    else {
+    else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
     }
 
 }
 
 function moveWholeBoardUp() {
+    const copy = board.map(x => x.slice());
     for (let j = 0; j < 4; j++) {
         let col = board.map(x => x[j]);
         col = col.filter(x => x != 0);
@@ -113,16 +125,17 @@ function moveWholeBoardUp() {
 
     }
 
-    if (!isGameOver(board)) {
+    if (!equal(board, copy)) {
         random_Spawn();
         updateDisplay();
     }
-    else {
+    else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
     }
 }
 
 function moveWholeBoardRight() {
+    const copy = board.map(x => x.slice());
     for (let i = 0; i < 4; i++) {
         let row = board[i];
         row = row.filter(x => x != 0);
@@ -143,16 +156,17 @@ function moveWholeBoardRight() {
         board[i] = row;
     }
 
-    if (!isGameOver(board)) {
+    if (!equal(board, copy)) {
         random_Spawn();
         updateDisplay();
     }
-    else {
+    else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
     }
 }
 
 function moveWholeBoardLeft() {
+    const copy = board.map(x => x.slice());
     for (let i = 0; i < 4; i++) {
         let row = board[i];
         row = row.filter(x => x != 0);
@@ -173,11 +187,11 @@ function moveWholeBoardLeft() {
         board[i] = row;
     }
 
-    if (!isGameOver(board)) {
+    if (!equal(board, copy)) {
         random_Spawn();
         updateDisplay();
     }
-    else {
+    else if(isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";
     }
 }
