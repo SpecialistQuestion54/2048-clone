@@ -7,6 +7,7 @@ new_game_btn.addEventListener('click', function () {
 let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
 const ROW = 4;
 const CELLS = ROW * ROW;
+const WINNING_SCORE = 2048;
 
 let grid = document.querySelector(".grid");
 let score = 0;
@@ -174,6 +175,10 @@ function moveBoard(dir) {
         random_Spawn();
         updateDisplay();
         updateBoard(copy);
+        if(board.map(x => x.includes(WINNING_SCORE)).includes(true)) {
+            document.querySelector(".game-over-text").innerText = "You Won!";
+            document.querySelector(".game-over").style.display = "flex";
+        }
     }
     else if (isGameOver(board)) {
         document.querySelector(".game-over").style.display = "flex";

@@ -290,10 +290,6 @@ body {
     background-color: #7f6a56;
 }
 
-.you-won {
-    display: none;
-}
-
 .game-over {
     position: absolute;
     top: 0;
